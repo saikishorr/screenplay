@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Screenplay Writer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🎬</span>
+      <span class="title">Screenplay Writer</span>
+    </div>
+
+    <div class="actions">
+      <input id="upload" type="file" accept=".txt,.fountain,.fdx,.md,.rtf,.any" />
+      <button id="newBtn" title="Clear editor (Ctrl+N)">New</button>
+      <button id="downloadBtn" title="Download (Ctrl+S)">Download</button>
+      <select id="downloadFormat" title="Download format">
+        <option value="fountain">.fountain</option>
+        <option value="txt">.txt</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Editor -->
+    <section class="editor-pane">
+      <div class="ruler" aria-hidden="true">
+        <!-- visual column hints (monospace columns) -->
+        <span class="tick">10</span>
+        <span class="tick">20</span>
+        <span class="tick">30</span>
+        <span class="tick">40</span>
+        <span class="tick">50</span>
+        <span class="tick">60</span>
+      </div>
+      <textarea id="editor" spellcheck="false" placeholder="Start writing your screenplay here... (Autosaves locally)">
+INT. LOCATION - DAY
+
+A quiet room. Rain patters on the window.
+
+                    ALEX
+          (whispering)
+     We start here...
+      </textarea>
+      <div class="statusbar">
+        <span id="cursorPos">Line 1, Col 1</span>
+        <span id="autosaveState">Saved</span>
+      </div>
+    </section>
+
+    <!-- Sidebar: Screenplay Formatter -->
+    <aside class="sidebar">
+      <h2>Screenplay Formatter</h2>
+
+      <div class="group">
+        <h3>Text Formatting and Indenting</h3>
+        <button data-action="header">Header</button>
+        <small>Add/Convert a scene header</small>
+
+        <button data-action="action">Action</button>
+        <small>Set indents for action text</small>
+
+        <button data-action="speaker">Speaker</button>
+        <small>Add/Convert speaker's name</small>
+
+        <button data-action="parentheses">Parentheses</button>
+        <small>Set indents for speaker's cue</small>
+
+        <button data-action="dialog">Dialog</button>
+        <small>Set indents for dialog text</small>
+      </div>
+
+      <div class="group">
+        <h3>Special Formatting</h3>
+        <button data-action="newchar">New Character</button>
+        <small>Add/Convert introduction</small>
+
+        <button data-action="vfx">VFX/SFX</button>
+        <small>Add/Convert a special effect</small>
+      </div>
+
+      <div class="group">
+        <h3>Transitions</h3>
+        <div class="transitions">
+          <button data-action="fadein">Fade In</button>
+          <button data-action="cutto">Cut To</button>
+          <button data-action="fadeout">Fade Out</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Language</h3>
+        <select id="language">
+          <option value="en" selected>English</option>
+        </select>
+      </div>
+
+      <div class="group help">
+        <h3>Shortcuts</h3>
+        <ul>
+          <li><kbd>Ctrl</kbd>+<kbd>1</kbd> Header</li>
+          <li><kbd>Ctrl</kbd>+<kbd>2</kbd> Action</li>
+          <li><kbd>Ctrl</kbd>+<kbd>3</kbd> Speaker</li>
+          <li><kbd>Ctrl</kbd>+<kbd>4</kbd> Parentheses</li>
+          <li><kbd>Ctrl</kbd>+<kbd>5</kbd> Dialog</li>
+          <li><kbd>Ctrl</kbd>+<kbd>S</kbd> Download</li>
+          <li><kbd>Ctrl</kbd>+<kbd>N</kbd> New</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    Made for GitHub Pages • Works entirely in your browser (no server).
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
