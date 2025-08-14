@@ -1,3 +1,5 @@
+/* Version 1.1.0 */
+
 :root{
   --bg:#0f172a;      /* slate-900 */
   --panel:#111827;   /* gray-900 */
@@ -7,6 +9,7 @@
   --accent:#60a5fa;  /* blue-400 */
   --border:#374151;  /* gray-700 */
 }
+
 
 /* ====== Base (UI uses system font, NOT Courier) ====== */
 *{box-sizing:border-box}

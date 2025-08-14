@@ -6,6 +6,7 @@
    - FDX export (Final Draft XML)
    - Formatter sidebar + mobile slide-in panel
    - Keyboard shortcuts
+   - version 1.1.0 
 ===================================== */
 
 const editor = document.getElementById('editor');
