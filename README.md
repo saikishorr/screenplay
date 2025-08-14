@@ -12,8 +12,7 @@ This release focuses on clean design, improved writing tools, and better export 
 - 💾 **Auto Save** – Your work is saved automatically
 - 📤 **Export Options** – Download in PDF or DOCX
 - 📱 **Responsive UI** – Works seamlessly on desktop, tablet, and mobile
-- 🔐 **User Authentication** – Secure login & registration
-- ☁ **Cloud Storage** – Access your scripts anywhere
+- 💾 **Download in PDF/FDX** - Download the script in PDF and FDX format.   
 
 ---
 
