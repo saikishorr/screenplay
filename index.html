@@ -9,18 +9,23 @@
 <body>
   <header class="topbar">
     <div class="brand">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle formatter">☰</button>
       <span class="logo">🎬</span>
       <span class="title">Screenplay Writer</span>
     </div>
 
     <div class="actions">
-      <input id="upload" type="file" accept=".txt,.fountain,.fdx,.md,.rtf,.any" />
+      <input id="upload" type="file" accept=".txt,.fountain,.fdx,.md,.rtf" />
       <button id="newBtn" title="Clear editor (Ctrl+N)">New</button>
-      <button id="downloadBtn" title="Download (Ctrl+S)">Download</button>
-      <select id="downloadFormat" title="Download format">
+
+      <select id="downloadFormat" title="Download text format">
         <option value="fountain">.fountain</option>
         <option value="txt">.txt</option>
       </select>
+      <button id="downloadBtn" title="Download text (Ctrl+S)">Download</button>
+
+      <button id="pdfBtn" title="Export PDF (Courier 12)">PDF</button>
+      <button id="fdxBtn" title="Export Final Draft (.fdx)">FDX</button>
     </div>
   </header>
 
@@ -28,7 +33,6 @@
     <!-- Editor -->
     <section class="editor-pane">
       <div class="ruler" aria-hidden="true">
-        <!-- visual column hints (monospace columns) -->
         <span class="tick">10</span>
         <span class="tick">20</span>
         <span class="tick">30</span>
@@ -36,15 +40,25 @@
         <span class="tick">50</span>
         <span class="tick">60</span>
       </div>
-      <textarea id="editor" spellcheck="false" placeholder="Start writing your screenplay here... (Autosaves locally)">
-INT. LOCATION - DAY
+
+      <!-- Script text ONLY: 12pt Courier New -->
+      <textarea
+        id="editor"
+        class="script-area"
+        spellcheck="false"
+        placeholder="Start writing your screenplay here... (Autosaves locally)"
+      >INT. LOCATION - DAY
 
 A quiet room. Rain patters on the window.
 
-                    ALEX
-          (whispering)
-     We start here...
+                         ALEX
+               (whispering)
+          We start here...
       </textarea>
+
+      <!-- Clean print output for browser Print (optional) -->
+      <pre id="printArea" class="script-area" aria-hidden="true"></pre>
+
       <div class="statusbar">
         <span id="cursorPos">Line 1, Col 1</span>
         <span id="autosaveState">Saved</span>
@@ -52,7 +66,7 @@ A quiet room. Rain patters on the window.
     </section>
 
     <!-- Sidebar: Screenplay Formatter -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <h2>Screenplay Formatter</h2>
 
       <div class="group">
@@ -114,9 +128,11 @@ A quiet room. Rain patters on the window.
   </main>
 
   <footer class="footer">
-    Made for GitHub Pages • Works entirely in your browser (no server).
+    100% client-side • Host on GitHub Pages • PDF / TXT / FDX exports
   </footer>
 
+  <!-- jsPDF for PDF export (built-in Courier font) -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

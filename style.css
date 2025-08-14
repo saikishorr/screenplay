@@ -1,18 +1,20 @@
 :root{
-  --bg:#0f172a;          /* slate-900 */
-  --panel:#111827;       /* gray-900 */
-  --panel-2:#1f2937;     /* gray-800 */
-  --text:#e5e7eb;        /* gray-200 */
-  --muted:#9ca3af;       /* gray-400 */
-  --accent:#60a5fa;      /* blue-400 */
-  --border:#374151;      /* gray-700 */
+  --bg:#0f172a;      /* slate-900 */
+  --panel:#111827;   /* gray-900 */
+  --panel-2:#1f2937; /* gray-800 */
+  --text:#e5e7eb;    /* gray-200 */
+  --muted:#9ca3af;   /* gray-400 */
+  --accent:#60a5fa;  /* blue-400 */
+  --border:#374151;  /* gray-700 */
 }
 
+/* ====== Base (UI uses system font, NOT Courier) ====== */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
   background:var(--bg);
   color:var(--text);
 }
@@ -22,19 +24,26 @@ body{
   padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--border);
   position:sticky; top:0; z-index:50;
 }
-.brand{display:flex; align-items:center; gap:8px; font-weight:700}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700}
 .logo{font-size:20px}
 .title{letter-spacing:.3px}
-.actions{display:flex; align-items:center; gap:8px}
+.actions{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 button, select, input[type=file]{
   background:var(--panel-2); color:var(--text); border:1px solid var(--border);
-  padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:600;
+  padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:700;
 }
 button:hover{border-color:var(--accent)}
 select{cursor:pointer}
+.sidebar-toggle{
+  display:none;
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  padding:6px 10px; border-radius:8px; font-weight:800;
+}
 
+/* ====== Layout ====== */
 .layout{
-  display:grid; grid-template-columns: 1fr 350px;
+  display:grid; grid-template-columns: 1fr 340px;
   gap:14px; padding:14px; min-height: calc(100vh - 120px);
 }
 
@@ -43,6 +52,14 @@ select{cursor:pointer}
   display:flex; flex-direction:column; overflow:hidden;
 }
 
+/* ====== ONLY the script uses Courier New 12pt ====== */
+.script-area{
+  font-family: "Courier New", Courier, monospace !important;
+  font-size: 12pt !important;
+  line-height: 1.5;
+}
+
+/* ruler + editor */
 .ruler{
   position:relative; height:22px; background:var(--panel-2); border-bottom:1px solid var(--border);
   font-size:12px; color:var(--muted); display:flex; align-items:center; padding-left:8px; gap:24px;
@@ -53,7 +70,16 @@ select{cursor:pointer}
   width:100%; height:calc(75vh); min-height:400px;
   resize:vertical; padding:16px;
   background:transparent; color:var(--text);
-  border:0; outline:none; line-height:1.5; font-size:16px; white-space:pre; tab-size:2;
+  border:0; outline:none; white-space:pre; tab-size:2;
+}
+
+/* hidden on screen, shown for print */
+#printArea{
+  display:none;
+  white-space:pre-wrap;
+  color:#000;
+  background:#fff;
+  padding:0; /* margins via @page */
 }
 
 .statusbar{
@@ -62,6 +88,7 @@ select{cursor:pointer}
   background:var(--panel-2);
 }
 
+/* sidebar */
 .sidebar{
   background:var(--panel); border:1px solid var(--border); border-radius:14px;
   padding:14px; position:sticky; top:66px; height:fit-content;
@@ -81,8 +108,28 @@ kbd{
 
 .footer{padding:16px; text-align:center; color:var(--muted)}
 
-@media (max-width: 960px){
-  .layout{grid-template-columns: 1fr; }
-  .sidebar{position:relative; top:auto}
+/* ====== Mobile responsive ====== */
+@media (max-width: 980px){
+  .layout{grid-template-columns: 1fr;}
+  .sidebar{position:fixed; top:56px; right:12px; bottom:12px; width:86%;
+           max-width:360px; transform:translateX(120%); transition:transform .25s ease;
+           overflow:auto; z-index:60}
+  body.sidebar-open .sidebar{transform:translateX(0)}
+  .sidebar-toggle{display:inline-block}
   #editor{height:60vh}
+}
+
+/* ====== Print styles (browser print -> Save as PDF) ====== */
+@media print {
+  @page {
+    /* US Letter — screenplay margins: Left 1.5", Right 1", Top/Bottom 1" */
+    size: letter;
+    margin: 1in 1in 1in 1.5in;
+  }
+
+  body { background:#fff; color:#000; }
+  .topbar, .sidebar, .statusbar, .ruler, .footer { display:none !important; }
+  .layout, .editor-pane { border:none; }
+  #editor { display:none !important; }
+  #printArea { display:block !important; }
 }

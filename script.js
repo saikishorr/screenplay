@@ -1,25 +1,33 @@
 /* ========= Screenplay Writer =========
+   - Script content ONLY in 12pt Courier New (CSS .script-area)
    - Autosave to localStorage
-   - Upload/Download
-   - Formatter sidebar (indent rules)
+   - Upload/Download (.txt or .fountain)
+   - PDF export (jsPDF; Courier 12; screenplay margins)
+   - FDX export (Final Draft XML)
+   - Formatter sidebar + mobile slide-in panel
    - Keyboard shortcuts
 ===================================== */
 
 const editor = document.getElementById('editor');
+const printArea = document.getElementById('printArea');
 const upload = document.getElementById('upload');
 const downloadBtn = document.getElementById('downloadBtn');
 const downloadFormat = document.getElementById('downloadFormat');
 const newBtn = document.getElementById('newBtn');
+const pdfBtn = document.getElementById('pdfBtn');
+const fdxBtn = document.getElementById('fdxBtn');
 const autosaveState = document.getElementById('autosaveState');
 const cursorPos = document.getElementById('cursorPos');
+const sidebarToggle = document.getElementById('sidebarToggle');
 
-/* ---------- UTIL: caret helpers for <textarea> ---------- */
-function getSelectionRange(el){
-  return { start: el.selectionStart, end: el.selectionEnd };
-}
-function setSelection(el, start, end=start){
-  el.focus(); el.setSelectionRange(start, end);
-}
+/* ---------- Sidebar toggle (mobile) ---------- */
+sidebarToggle.addEventListener('click', ()=>{
+  document.body.classList.toggle('sidebar-open');
+});
+
+/* ---------- Caret helpers ---------- */
+function getSelectionRange(el){ return { start: el.selectionStart, end: el.selectionEnd }; }
+function setSelection(el, start, end=start){ el.focus(); el.setSelectionRange(start, end); }
 function insertAtCursor(el, text, opts={select:false}){
   const { start, end } = getSelectionRange(el);
   const before = el.value.slice(0, start);
@@ -31,66 +39,31 @@ function insertAtCursor(el, text, opts={select:false}){
   updateCursorDisplay();
 }
 
-/* ---------- Screenplay tab stops (columns, 1-indexed) ---------- */
-const COL = {
-  DIALOG: 10,       // dialog block indent
-  PAREN: 16,        // parenthetical
-  SPEAKER: 22,      // character name
-  TRANSITION: 60    // right-aligned-ish
-};
-function spaces(n){ return ' '.repeat(Math.max(0, n)); }
-function padToColumn(targetCol){
-  // Begin a new line, then pad to (targetCol-1) spaces (since column indexing starts at 1)
-  return '\n' + spaces(targetCol - 1);
-}
-function rightAlign(text, targetCol = COL.TRANSITION){
-  const currentLen = text.length;
-  const pad = Math.max(1, targetCol - currentLen);
+/* ---------- Screenplay tab stops ---------- */
+const COL = { DIALOG: 10, PAREN: 16, SPEAKER: 22, TRANSITION: 60 };
+const spaces = n => ' '.repeat(Math.max(0, n));
+const padToColumn = c => '\n' + spaces(c - 1);
+const rightAlign = (text, c = COL.TRANSITION) => {
+  const pad = Math.max(1, c - text.length);
   return '\n' + spaces(pad) + text.toUpperCase();
-}
+};
 
 /* ---------- Formatter actions ---------- */
 const actions = {
-  header(){
-    const snippet = '\nINT. LOCATION - DAY\n';
-    insertAtCursor(editor, snippet);
-  },
-  action(){
-    const snippet = '\nAction line describing what happens.\n';
-    insertAtCursor(editor, snippet);
-  },
-  speaker(){
-    const snippet = padToColumn(COL.SPEAKER) + 'CHARACTER NAME\n';
-    insertAtCursor(editor, snippet);
-  },
-  parentheses(){
-    const snippet = padToColumn(COL.PAREN) + '(quietly)\n';
-    insertAtCursor(editor, snippet);
-  },
-  dialog(){
-    const snippet = padToColumn(COL.DIALOG) + 'This is a line of dialogue.\n';
-    insertAtCursor(editor, snippet);
-  },
+  header(){ insertAtCursor(editor, '\nINT. LOCATION - DAY\n'); },
+  action(){ insertAtCursor(editor, '\nAction line describing what happens.\n'); },
+  speaker(){ insertAtCursor(editor, padToColumn(COL.SPEAKER) + 'CHARACTER NAME\n'); },
+  parentheses(){ insertAtCursor(editor, padToColumn(COL.PAREN) + '(quietly)\n'); },
+  dialog(){ insertAtCursor(editor, padToColumn(COL.DIALOG) + 'This is a line of dialogue.\n'); },
   newchar(){
-    const snippet = padToColumn(COL.SPEAKER) + 'NEW CHARACTER\n' + padToColumn(COL.PAREN) + '(introducing)\n';
-    insertAtCursor(editor, snippet);
+    insertAtCursor(editor, padToColumn(COL.SPEAKER) + 'NEW CHARACTER\n' +
+                             padToColumn(COL.PAREN) + '(introducing)\n');
   },
-  vfx(){
-    const snippet = '\nSFX: THUNDER CRACKS.\n';
-    insertAtCursor(editor, snippet);
-  },
-  fadein(){
-    insertAtCursor(editor, rightAlign('FADE IN:') + '\n');
-  },
-  cutto(){
-    insertAtCursor(editor, rightAlign('CUT TO:') + '\n');
-  },
-  fadeout(){
-    insertAtCursor(editor, rightAlign('FADE OUT.') + '\n');
-  }
+  vfx(){ insertAtCursor(editor, '\nSFX: THUNDER CRACKS.\n'); },
+  fadein(){ insertAtCursor(editor, rightAlign('FADE IN:') + '\n'); },
+  cutto(){ insertAtCursor(editor, rightAlign('CUT TO:') + '\n'); },
+  fadeout(){ insertAtCursor(editor, rightAlign('FADE OUT.') + '\n'); }
 };
-
-/* ---------- Wire sidebar buttons ---------- */
 document.querySelectorAll('[data-action]').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     const action = btn.getAttribute('data-action');
@@ -98,7 +71,7 @@ document.querySelectorAll('[data-action]').forEach(btn=>{
   });
 });
 
-/* ---------- Autosave (localStorage) ---------- */
+/* ---------- Autosave ---------- */
 const KEY = 'screenplay:autosave:v1';
 let saveTimer = null;
 
@@ -109,17 +82,15 @@ function triggerAutosave(){
     try {
       localStorage.setItem(KEY, editor.value);
       autosaveState.textContent = 'Saved';
-    } catch (e) {
+    } catch {
       autosaveState.textContent = 'Not saved (storage full?)';
     }
   }, 300);
 }
-
-function loadAutosave(){
+(function loadAutosave(){
   const data = localStorage.getItem(KEY);
   if(data) editor.value = data;
-}
-loadAutosave();
+})();
 
 editor.addEventListener('input', ()=>{ triggerAutosave(); updateCursorDisplay(); });
 editor.addEventListener('click', updateCursorDisplay);
@@ -134,7 +105,7 @@ function updateCursorDisplay(){
   cursorPos.textContent = `Line ${line}, Col ${col}`;
 }
 
-/* ---------- Upload (continue writing) ---------- */
+/* ---------- Upload ---------- */
 upload.addEventListener('change', (e)=>{
   const file = e.target.files?.[0];
   if(!file) return;
@@ -145,36 +116,103 @@ upload.addEventListener('change', (e)=>{
     updateCursorDisplay();
   };
   reader.readAsText(file);
-  // reset to allow re-uploading the same file if needed
   upload.value = '';
 });
 
-/* ---------- Download ---------- */
+/* ---------- Download text (.txt / .fountain) ---------- */
 function downloadText(filename, text){
   const blob = new Blob([text], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
-
 downloadBtn.addEventListener('click', ()=>{
   const ext = downloadFormat.value === 'fountain' ? 'fountain' : 'txt';
-  const filename = `script.${ext}`;
-  downloadText(filename, editor.value);
+  downloadText(`script.${ext}`, editor.value);
 });
 
-/* ---------- New (clear editor) ---------- */
-newBtn.addEventListener('click', ()=>{
-  if(confirm('Clear the editor? Unsaved changes will be lost (download first if needed).')){
-    editor.value = '';
-    triggerAutosave();
-    updateCursorDisplay();
+/* ---------- PDF export (jsPDF) ---------- */
+pdfBtn.addEventListener('click', ()=>{
+  const { jsPDF } = window.jspdf;
+  // US Letter, units in inches
+  const doc = new jsPDF({ unit: 'in', format: 'letter' });
+  // Courier, 12 pt
+  doc.setFont('courier', 'normal');
+  doc.setFontSize(12);
+
+  // Screenplay margins: L 1.5", R 1", T 1", B 1"
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = { top: 1, right: 1, bottom: 1, left: 1.5 };
+  const usableWidth = pageWidth - margin.left - margin.right;
+  const lineHeight = 12 / 72 * 1.5; // 12pt in inches * 1.5 leading
+
+  let y = margin.top;
+  const text = editor.value.replace(/\r\n/g, '\n');
+  const lines = text.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    // Respect spaces for indenting—use splitTextToSize with no trimming
+    const chunks = doc.splitTextToSize(lines[i].replace(/\t/g,'    '), usableWidth, { lineBreak: true });
+    chunks.forEach(chunk => {
+      if (y + lineHeight > pageHeight - margin.bottom) {
+        doc.addPage();
+        doc.setFont('courier','normal');
+        doc.setFontSize(12);
+        y = margin.top;
+      }
+      doc.text(chunk || ' ', margin.left, y, { baseline: 'top' });
+      y += lineHeight;
+    });
   }
+
+  doc.save('script.pdf');
+});
+
+/* ---------- FDX export ---------- */
+function inferParagraphType(line){
+  const trimmed = line.trim();
+  const isAllCaps = /^[^a-z]*$/.test(trimmed) && /[A-Z]/.test(trimmed);
+  const startsWithINTEXT = /^(INT\.|EXT\.|INT\/EXT\.)/.test(trimmed);
+  const isTransition = /(FADE IN:|FADE OUT\.|CUT TO:)\s*$/.test(trimmed);
+  const isParenthetical = /^\(.+\)$/.test(trimmed);
+
+  if (startsWithINTEXT) return 'Scene Heading';
+  if (isTransition) return 'Transition';
+  if (isAllCaps && trimmed.length > 0 && trimmed.length <= 30) return 'Character';
+  if (isParenthetical) return 'Parenthetical';
+
+  const leading = line.match(/^\s*/)?.[0]?.length ?? 0;
+  if (leading >= 9 && !startsWithINTEXT && !isTransition && !isParenthetical && !/SFX:/.test(trimmed)) {
+    return 'Dialogue';
+  }
+  return 'Action';
+}
+const xmlEscape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function buildFDX(text){
+  const lines = text.replace(/\r\n/g, '\n').split('\n');
+  const paras = lines.map(l=>{
+    const type = l.trim() === '' ? 'Action' : inferParagraphType(l);
+    const xmlText = xmlEscape(l.replace(/\t/g,'    '));
+    return `      <Paragraph Type="${type}"><Text>${xmlText}</Text></Paragraph>`;
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<FinalDraft DocumentType="Script" Version="1">
+  <Content>
+${paras}
+  </Content>
+</FinalDraft>
+`;
+}
+
+fdxBtn.addEventListener('click', ()=>{
+  const xml = buildFDX(editor.value);
+  downloadText('script.fdx', xml);
 });
 
 /* ---------- Keyboard shortcuts ---------- */
@@ -191,5 +229,9 @@ document.addEventListener('keydown', (e)=>{
   }
 });
 
-/* Initial cursor display */
-updateCursorDisplay();
+/* ---------- Print helper (optional) ---------- */
+function syncPrintArea(){ printArea.textContent = editor.value; }
+window.addEventListener('beforeprint', syncPrintArea);
+
+/* Init */
+(function init(){ syncPrintArea(); updateCursorDisplay(); })();
