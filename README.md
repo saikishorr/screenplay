@@ -29,28 +29,17 @@ This release focuses on clean design, improved writing tools, and better export 
     ```
     cd screenplay
     ```
-3. Set Up Backend
 
-- Configure config.php for database connection
-- Import database.sql into MySQL
-
-4. Run Locally
-
-- Use XAMPP/WAMP or any PHP server
-- Access via http://localhost/screenplay
 
 ## 🛠 Tech Stack
 - Frontend: HTML, CSS, JavaScript
-- Backend: PHP (Custom MVC structure)
-- Database: MySQL
-- Export: PHPWord (for DOCX), TCPDF (for PDF)
+- Export: PDF, FDX, Fountain, Txt
 
 ## 📜 Changelog
-### Version 1.0.0 – Initial Release
+### Version 1.1.0 – Release version 1.1.0
 - Core screenplay editor implemented
-- User authentication system added
 - Auto-save feature introduced
-- PDF/DOCX export functionality enabled
+- PDF/FDX export functionality enabled
 - Mobile-friendly responsive design
 
 ## 📸 Screenshots
