@@ -1,90 +1,140 @@
-Title: PRIME TIME 
+Title: PRIME TIME
+Written by: [Your Name]
 
-                                                    FADE IN:
-1
-INT. CREDENCE GLOBAL SOLUTIONS – FIFTH FLOOR – PRIME MEETING ROOM – NIGHT
+ACT ONE
 
-The clock reads 9:28 P.M.  
-The ARTIVA PROGRAMMING TEAM files into the PRIME meeting room.  
-Manager PRADEEP leads the group — junior software engineers, software engineers, and DAG team members in tow.
+INT. CREDENCE GLOBAL SOLUTIONS – FIFTH FLOOR – OFFICE – NIGHT
 
-But the room is already full.  
-The BACK OFFICE TEAM, twice their size, sits around the table, deep in discussion.  
-At the head, BACK OFFICE MANAGER SANTOSH speaks to his people.
+It’s 9:25 P.M. The office is dim but alive —  
+computer screens glow like islands in the dark.  
+The low whir of the central AC mixes with the faint tapping of a distant keyboard.  
+Some desks are empty, others cluttered with coffee cups and half-eaten snacks.
 
-Across the room, a tense silence grows.
+The ARTIVA PROGRAMMING TEAM gathers near the PRIME meeting room.  
+Manager PRADEEP leads — upright posture, laptop bag over one shoulder.  
+His team — junior software engineers, software engineers, DAG members — shuffle in,  
+some rubbing tired eyes, others sipping the last of their tea.
+
+                              JUNIOR ENGINEER
+               (quiet, to colleague)
+               Didn’t think we’d still be here this late.
+
+                              SOFTWARE ENGINEER
+               Yeah... but Artiva training’s not something you skip.
+
+They reach the PRIME meeting room. Through the glass walls:  
+The BACK OFFICE TEAM is already in session — twice their number,  
+papers spread out, voices overlapping.  
+At the head, BACK OFFICE MANAGER SANTOSH speaks quickly, gesturing at a chart.
+
+Pradeep opens the door just enough to be heard.
 
                               PRADEEP
-               (to Santosh, polite)
-               We have this room booked from 9:30 to 10:30 for Artiva training.
+               (polite but firm)
+               Santosh — we’ve got this room booked from 9:30 to 10:30.
 
                               SANTOSH
-               I know, but this is urgent. We started late — 
-               Punithan’s meeting pushed ours back. We need more time.
+               I know. But we started late — Punithan’s meeting went over.  
+               We still have critical points to cover.
 
 FLASHBACK TO:
 INT. PRIME MEETING ROOM – EARLIER – EVENING
 
-SENIOR MANAGER PUNITHAN sits with his team from 6:30 to 7:30,  
-but the discussion runs over. The BACK OFFICE TEAM waits outside,  
-checking watches. Finally, they enter at 7:45, already behind schedule.
+A clock ticks loudly.  
+SENIOR MANAGER PUNITHAN sits with his team — a deep technical discussion.  
+Scheduled from 6:30 to 7:30, it creeps into overtime.  
+The BACK OFFICE TEAM waits outside, leaning on walls, checking watches,  
+the murmur of impatient whispers.
+
+Finally, at 7:45, they’re let in — already behind schedule.
 
 BACK TO PRESENT:
 
-The ARTIVA team members glance at each other — they didn’t know any of this.
-
                               PRADEEP
-               My team’s training is important too. Payment arrangement 
-               workflow isn’t something we can just skip.
+               My team’s training isn’t optional either.  
+               Payment arrangement workflow’s not something we guess.
 
                               SANTOSH
                And neither is ours.
 
-Pradeep thinks for a moment.  
-He pulls out his phone, steps aside, and dials MANAGEMENT.
+A tense pause. The hum of the AC seems louder.  
+
+
+ACT TWO
+
+Pradeep takes a step back, pulling out his phone.  
+His thumb hovers for a moment before he dials MANAGEMENT.
 
                               PRADEEP
                (into phone)
-               Which meeting room is available now?
+               Hi, PRIME’s occupied. Which meeting room’s available now?
 
-A pause. He listens.  
-
-                              PRADEEP
-               ORIN? First floor? Got it.
-
-He ends the call and turns to Santosh.
+A faint voice on the other end. Pradeep listens.
 
                               PRADEEP
-               Fine. You keep the PRIME. We’ll move to ORIN.
+               ORIN? First floor? Okay, book it. We’ll head down.
 
-The ARTIVA team groans quietly, but they follow him out.
+He hangs up, turns to his team.
+
+                              PRADEEP
+               Change of plan — ORIN’s free. First floor. Let’s go.
+
+There’s a small chorus of groans.  
+Everyone knows the PCI zone rules — no books, no pens, no laptops, no mobiles.  
+Only Pradeep will have a laptop.
 
 INT. CREDENCE GLOBAL SOLUTIONS – LIFT – NIGHT
 
-Everyone crams into the lift.  
-It’s slow, stopping at almost every floor.  
-Only Pradeep carries a laptop bag. The rest have empty hands —  
-the PCI zone on the first floor doesn’t allow books, pens, laptops, or mobiles.
+They squeeze in. The metallic doors close with a dull thud.  
+A soft mechanical hum and the occasional *ding* mark each slow stop.
+
+                              DAG TEAM MEMBER
+               (half-joking)
+               At this speed, we could’ve taken the stairs.
 
                               JUNIOR ENGINEER
-               (muttering)
-               At this rate, the training will be halfway done before we start.
+               And be frozen solid before we get there.
 
-Pradeep smirks, shaking his head.
+They chuckle. The fatigue softens for a moment.
+
+The lift doors open to the FIRST FLOOR.  
+The PCI zone feels different — colder, quieter.  
+Badge scanners beep, cameras blink red, security glass gleams.  
+The air smells faintly sterile, like freshly cleaned metal.
+
+
+ACT THREE
 
 INT. ORIN MEETING ROOM – FIRST FLOOR – NIGHT
 
-The team enters. The blast of COLD AIR hits them —  
-the centralized AC is running strong.
+The door swings open.  
+A rush of cold air hits them — sharper than upstairs.  
+The central AC hums like a steady engine.  
+The room’s lighting is bright, almost clinical.  
+Every sound — footsteps, chair squeaks — echoes more here.
 
-They take their seats. Pradeep sets up his laptop at the head of the table.  
-No one else has notes — just their attention.
+The ORIN room is smaller than PRIME.  
+Minimal furniture, spotless walls.  
+A faint chemical-clean scent hangs in the air.
+
+The team sits. Hands empty.  
+Pradeep places his laptop on the table — the only one allowed.  
+The soft click of the latch echoes in the quiet.
 
                               PRADEEP
                Alright, payment arrangement workflow in Artiva.  
-               Let’s get started.
+               No slides, no papers — just your attention.
 
-The hum of the AC fills the quiet as he begins the session.  
-Despite the delay, focus sharpens.
+He begins. The blue glow of the screen lights his face,  
+casting long shadows on the white wall behind him.
+
+The team leans forward, eyes fixed.  
+The earlier tension fades into quiet concentration.  
+Outside, the world is still; inside, only the hum of AC  
+and the cadence of Pradeep’s voice guide the hour.
+
+CLOSE ON:  
+A faint cloud of breath from one of the engineers in the cold air,  
+drifting upward and fading into nothing.
 
 FADE OUT.
