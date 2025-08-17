@@ -266,8 +266,8 @@ const downloadBlob = (name, data, type='text/plain')=>{
   btn.id = 'themeToggle';
   btn.textContent = '☀︎/🌙';
   btn.title = 'Toggle theme';
-  btn.style.marginLeft = '6px';
-  ($('.actions') || $('.topbar') || document.body).appendChild(btn);
+  btn.style.marginRight = '6px';
+  ($('.brand') || $('.topbar') || document.body).appendChild(btn);
 
   const KEY_THEME = 'screenplay:theme';
   const saved = localStorage.getItem(KEY_THEME);
