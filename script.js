@@ -220,8 +220,8 @@ fdxBtn.addEventListener('click', ()=>{
 document.addEventListener('keydown', (e)=>{
   if(e.ctrlKey){
     const k = e.key.toLowerCase();
-    if(k === 's'){ e.preventDefault(); downloadBtn.click(); }
-    if(k === 'n'){ e.preventDefault(); newBtn.click(); }
+    if(k === '7'){ e.preventDefault(); downloadBtn.click(); }
+    if(k === '6'){ e.preventDefault(); newBtn.click(); }
     if(k === '1'){ e.preventDefault(); actions.header(); }
     if(k === '2'){ e.preventDefault(); actions.action(); }
     if(k === '3'){ e.preventDefault(); actions.speaker(); }
@@ -236,3 +236,292 @@ window.addEventListener('beforeprint', syncPrintArea);
 
 /* Init */
 (function init(){ syncPrintArea(); updateCursorDisplay(); })();
+
+
+/* ---------- New Script ---------- */
+newBtn.addEventListener('click', () => {
+  if (confirm("Start a new script? Unsaved changes will be lost.")) {
+    editor.value = "";
+    triggerAutosave();
+    updateCursorDisplay();
+  }
+});
+
+
+/* ===== Technical Enhancements + Screenplay-Specific Enhancements (JS) ===== */
+/* Requires an existing <textarea id="editor"> and sidebar/status elements from your app. */
+
+/* ---------- Utilities ---------- */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const downloadBlob = (name, data, type='text/plain')=>{
+  const b = new Blob([data], {type}); const u = URL.createObjectURL(b);
+  const a = document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a);
+  a.click(); a.remove(); URL.revokeObjectURL(u);
+};
+
+/* ---------- 1) Theme Toggle (Dark/Light) ---------- */
+(function injectThemeToggle(){
+  const btn = document.createElement('button');
+  btn.id = 'themeToggle';
+  btn.textContent = '☀︎/🌙';
+  btn.title = 'Toggle theme';
+  btn.style.marginLeft = '6px';
+  ($('.actions') || $('.topbar') || document.body).appendChild(btn);
+
+  const KEY_THEME = 'screenplay:theme';
+  const saved = localStorage.getItem(KEY_THEME);
+  if(saved === 'light') document.body.classList.add('light');
+
+  btn.addEventListener('click', ()=>{
+    document.body.classList.toggle('light');
+    localStorage.setItem(KEY_THEME, document.body.classList.contains('light') ? 'light' : 'dark');
+  });
+})();
+
+/* ---------- 2) Writing Analytics (Words/Chars/Scenes) ---------- */
+(function injectMetrics(){
+  const bar = document.querySelector('.statusbar');
+  if(!bar) return;
+  const box = document.createElement('span');
+  box.className = 'status-metrics';
+  box.innerHTML = `<span id="mWords">Words: 0</span><span id="mChars">Chars: 0</span><span id="mScenes">Scenes: 0</span>`;
+  bar.appendChild(box);
+
+  const count = ()=>{
+    const t = editor.value;
+    const words = (t.match(/\b[\w’'-]+\b/g) || []).length;
+    const chars = t.length;
+    const scenes = (t.match(/^(INT\.|EXT\.|INT\/EXT\.)/gmi) || []).length;
+    $('#mWords').textContent = `Words: ${words}`;
+    $('#mChars').textContent = `Chars: ${chars}`;
+    $('#mScenes').textContent = `Scenes: ${scenes}`;
+  };
+  editor.addEventListener('input', count);
+  document.addEventListener('DOMContentLoaded', count);
+  count();
+})();
+
+/* ---------- 3) Find & Replace (Ctrl+F to open) ---------- */
+(function injectFindReplace(){
+  const panel = document.createElement('div');
+  panel.className = 'find-panel';
+  panel.style.display = 'none';
+  panel.innerHTML = `
+    <input id="findText" placeholder="Find" />
+    <input id="replaceText" placeholder="Replace" />
+    <button id="findPrevBtn" title="Shift+Enter">Prev</button>
+    <button id="findNextBtn" title="Enter">Next</button>
+    <button id="replaceBtn">Replace</button>
+    <button id="replaceAllBtn">All</button>
+    <button id="closeFind">✕</button>
+  `;
+  document.body.appendChild(panel);
+
+  let lastIndex = 0;
+  const getText = ()=> editor.value;
+  const setSel = (start, end)=>{ editor.focus(); editor.setSelectionRange(start, end); editor.scrollTop = editor.scrollHeight * (start / getText().length); };
+
+  function findNext(back=false){
+    const q = $('#findText').value;
+    if(!q) return;
+    const text = getText();
+    const start = back ? Math.max(0, editor.selectionStart - 1) : Math.max(editor.selectionEnd, lastIndex);
+    let idx = back ? text.lastIndexOf(q, start) : text.indexOf(q, start);
+    if(idx === -1){ // wrap
+      idx = back ? text.lastIndexOf(q) : text.indexOf(q);
+    }
+    if(idx !== -1){
+      setSel(idx, idx + q.length);
+      lastIndex = idx + (back ? 0 : q.length);
+    }
+  }
+  function replaceSel(){
+    const q = $('#findText').value; if(!q) return;
+    const r = $('#replaceText').value ?? '';
+    const {selectionStart:s, selectionEnd:e} = editor;
+    if(e > s && editor.value.slice(s,e) === q){
+      editor.setRangeText(r, s, e, 'end');
+      triggerAutosave?.();
+    }
+  }
+  function replaceAll(){
+    const q = $('#findText').value; if(!q) return;
+    const r = $('#replaceText').value ?? '';
+    editor.value = getText().split(q).join(r);
+    triggerAutosave?.();
+  }
+
+  // open/close
+  function open(){ panel.style.display='flex'; $('#findText').focus(); $('#findText').select(); }
+  function close(){ panel.style.display='none'; }
+
+  document.addEventListener('keydown',(e)=>{
+    if(e.ctrlKey && e.key.toLowerCase() === 'f'){ e.preventDefault(); open(); }
+    if(e.key === 'Escape' && panel.style.display !== 'none'){ close(); }
+    if(e.key === 'Enter' && panel.style.display !== 'none'){ e.preventDefault(); findNext(e.shiftKey); }
+  });
+  $('#findNextBtn').addEventListener('click',()=>findNext(false));
+  $('#findPrevBtn').addEventListener('click',()=>findNext(true));
+  $('#replaceBtn').addEventListener('click',replaceSel);
+  $('#replaceAllBtn').addEventListener('click',replaceAll);
+  $('#closeFind').addEventListener('click',close);
+})();
+
+/* ---------- 4) Scene Numbering (toggle add/update) ---------- */
+(function injectSceneNumbering(){
+  const btn = document.createElement('button');
+  btn.id = 'sceneNumberBtn';
+  btn.textContent = 'Number Scenes';
+  btn.title = 'Auto-number INT./EXT. headings';
+  ($('.actions') || $('.topbar') || document.body).appendChild(btn);
+
+  btn.addEventListener('click', ()=>{
+    const lines = editor.value.replace(/\r\n/g,'\n').split('\n');
+    let n = 1;
+    const out = lines.map(line=>{
+      const m = line.match(/^\s*(\d+\.\s+)?(INT\.|EXT\.|INT\/EXT\.)\s*/i);
+      if(m){
+        // remove existing leading number like "12. "
+        const cleaned = line.replace(/^\s*\d+\.\s+/, '');
+        const numbered = `${n}. ${cleaned}`;
+        n++;
+        return numbered;
+      }
+      return line;
+    }).join('\n');
+    editor.value = out;
+    triggerAutosave?.();
+  });
+})();
+
+/* ---------- 5) Outline View (scene list, click to jump) ---------- */
+(function injectOutline(){
+  const sidebar = document.querySelector('.sidebar');
+  if(!sidebar) return;
+  const wrap = document.createElement('div');
+  wrap.id = 'outline';
+  wrap.innerHTML = `<h3>Outline</h3><ul id="outlineList"></ul>`;
+  sidebar.appendChild(wrap);
+  const list = $('#outlineList');
+
+  function rebuild(){
+    const lines = editor.value.replace(/\r\n/g,'\n').split('\n');
+    list.innerHTML = '';
+    let charCount = 0;
+    lines.forEach((ln, i)=>{
+      const m = ln.match(/^\s*(\d+\.\s+)?(INT\.|EXT\.|INT\/EXT\.)\s*(.*)$/i);
+      const len = ln.length + 1; charCount += len;
+      if(m){
+        const item = document.createElement('li');
+        const num = (m[1] || '').trim();
+        const tail = (m[3] || '').trim();
+        item.textContent = `${(num||'').replace('.','')} ${m[2].toUpperCase()} ${tail}`.trim();
+        const pos = charCount - len; // approx char index at line start
+        item.addEventListener('click', ()=>{
+          editor.focus();
+          editor.setSelectionRange(pos, pos);
+        });
+        list.appendChild(item);
+      }
+    });
+  }
+  editor.addEventListener('input', rebuild);
+  rebuild();
+})();
+
+/* ---------- 6) Templates (insert starters) ---------- */
+(function injectTemplates(){
+  const dd = document.createElement('select');
+  dd.id = 'templateSelect';
+  dd.title = 'Insert template';
+  dd.innerHTML = `
+    <option value="">Templates…</option>
+    <option value="feature">Feature Film</option>
+    <option value="short">Short Film</option>
+    <option value="tv">TV Pilot</option>
+  `;
+  ($('.actions') || $('.topbar') || document.body).appendChild(dd);
+
+  const TPL = {
+    feature: `TITLE: YOUR MOVIE
+
+INT. LOCATION - DAY
+
+Action line setting the scene.
+
+                         PROTAGONIST
+               (under their breath)
+          First line of dialogue.
+
+`,
+    short: `TITLE: YOUR SHORT
+
+EXT. PARK - EVENING
+
+A simple moment.
+
+                         ALEX
+          Let's keep this tight.
+
+`,
+    tv: `SERIES TITLE: EPISODE 101
+
+INT. WRITERS' ROOM - DAY
+
+The room buzzes.
+
+                         SHOWRUNNER
+          Cold open. Let's go.
+
+`
+  };
+
+  dd.addEventListener('change', ()=>{
+    const v = dd.value; if(!v) return;
+    if(confirm('Replace current content with template?')){
+      editor.value = TPL[v];
+      triggerAutosave?.();
+    }
+    dd.value = '';
+  });
+})();
+
+/* ---------- 7) Script Breakdown (export simple JSON) ---------- */
+(function injectBreakdown(){
+  const btn = document.createElement('button');
+  btn.id = 'breakdownBtn';
+  btn.textContent = 'Breakdown JSON';
+  btn.title = 'Export characters & scenes';
+  ($('.actions') || $('.topbar') || document.body).appendChild(btn);
+
+  btn.addEventListener('click', ()=>{
+    const txt = editor.value.replace(/\r\n/g,'\n');
+    const lines = txt.split('\n');
+
+    const scenes = [];
+    const characters = new Set();
+
+    let current = null;
+    lines.forEach(l=>{
+      const scene = l.match(/^\s*(\d+\.\s+)?(INT\.|EXT\.|INT\/EXT\.)\s*(.*)$/i);
+      if(scene){
+        current = { heading: l.trim(), lines: [] };
+        scenes.push(current);
+      } else if(current){
+        current.lines.push(l);
+      }
+      // naive character cue: all caps, short
+      const cue = l.trim();
+      if(/^[^a-z]*$/.test(cue) && /[A-Z]/.test(cue) && cue.length>0 && cue.length<=30 && !/^(INT\.|EXT\.|INT\/EXT\.)/i.test(cue)){
+        characters.add(cue.replace(/\s+\(.*\)$/,'').trim());
+      }
+    });
+
+    const data = {
+      scenes: scenes.map(s=>({ heading: s.heading, length: s.lines.length })),
+      characters: Array.from(characters).sort()
+    };
+    downloadBlob('breakdown.json', JSON.stringify(data, null, 2), 'application/json');
+  });
+})();

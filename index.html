@@ -7,17 +7,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Screenplay Writer</title>
   <link rel="stylesheet" href="style.css" />
+   <link rel="icon" href="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/50/external-script-copywriting-flaticons-lineal-color-flat-icons.png" sizes="any">   
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">
-      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle formatter">☰</button>
-      <span class="logo">🎬</span>
-      <span class="title">Screenplay Writer</span>
-    </div>
+  <div class="brand">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle formatter">☰</button>
+    <span class="logo">🎬</span>
+    <span class="title">Screenplay Writer</span>
+  </div>
 
+  <!-- Wrap actions in a separate row -->
+  <div class="actions-row">
     <div class="actions">
-      <input id="upload" type="file" accept=".txt,.fountain,.fdx,.md,.rtf" />
+      <label for="upload" class="visually-hidden">Upload screenplay file</label>
+      <input id="upload" type="file" accept=".txt,.fountain,.fdx,.rtf" title="Upload screenplay file" />
       <button id="newBtn" title="Clear editor (Ctrl+N)">New</button>
 
       <select id="downloadFormat" title="Download text format">
@@ -29,7 +33,9 @@
       <button id="pdfBtn" title="Export PDF (Courier 12)">PDF</button>
       <button id="fdxBtn" title="Export Final Draft (.fdx)">FDX</button>
     </div>
-  </header>
+  </div>
+</header>
+
 
   <main class="layout">
     <!-- Editor -->
@@ -72,20 +78,20 @@ A quiet room. Rain patters on the window.
       <h2>Screenplay Formatter</h2>
 
       <div class="group">
-        <h3>Text Formatting and Indenting</h3>
-        <button data-action="header">Header</button>
-        <small>Add/Convert a scene header</small>
+        <h3>Text Formatting and Indenting </h3>
+        <button data-action="header">Header <kbd>Ctrl</kbd>+<kbd>1</kbd></button>
+        <small>Add/Convert a scene header </small>
 
-        <button data-action="action">Action</button>
+        <button data-action="action">Action<kbd>Ctrl</kbd>+<kbd>2</kbd></button>
         <small>Set indents for action text</small>
 
-        <button data-action="speaker">Speaker</button>
+        <button data-action="speaker">Speaker <kbd>Ctrl</kbd>+<kbd>3</kbd></button>
         <small>Add/Convert speaker's name</small>
 
-        <button data-action="parentheses">Parentheses</button>
+        <button data-action="parentheses">Parentheses <kbd>Ctrl</kbd>+<kbd>4</kbd></button>
         <small>Set indents for speaker's cue</small>
 
-        <button data-action="dialog">Dialog</button>
+        <button data-action="dialog">Dialog <kbd>Ctrl</kbd>+<kbd>5</kbd></button>
         <small>Set indents for dialog text</small>
       </div>
 
@@ -109,7 +115,8 @@ A quiet room. Rain patters on the window.
 
       <div class="group">
         <h3>Language</h3>
-        <select id="language">
+        <label for="language" class="visually-hidden">Language selection</label>
+        <select id="language" title="Language selection">
           <option value="en" selected>English</option>
         </select>
       </div>
@@ -122,8 +129,8 @@ A quiet room. Rain patters on the window.
           <li><kbd>Ctrl</kbd>+<kbd>3</kbd> Speaker</li>
           <li><kbd>Ctrl</kbd>+<kbd>4</kbd> Parentheses</li>
           <li><kbd>Ctrl</kbd>+<kbd>5</kbd> Dialog</li>
-          <li><kbd>Ctrl</kbd>+<kbd>S</kbd> Download</li>
-          <li><kbd>Ctrl</kbd>+<kbd>N</kbd> New</li>
+          <li><kbd>Ctrl</kbd>+<kbd>6</kbd> New</li>
+          <li><kbd>Ctrl</kbd>+<kbd>7</kbd> Download</li>
         </ul>
       </div>
     </aside>

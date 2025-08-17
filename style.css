@@ -21,14 +21,34 @@ body{
   background:var(--bg);
   color:var(--text);
 }
-
-.topbar{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--border);
-  position:sticky; top:0; z-index:50;
+.topbar{ 
+  display:flex;
+  flex-direction: column; /* stack brand and actions */
+  gap: 0.5rem;
 }
+
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  padding: 14px 14px;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.topbar .actions-row {
+  display: flex;
+  flex-wrap: wrap; /* buttons wrap on small screens */
+  gap: 0.5rem;
+}
+/* .topbar{ */
+  /* display:flex; align-items:center; justify-content:space-between; */
+  /* padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--border); */
+  /* position:sticky; top:0; z-index:50; */
+/* } */
 .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-.logo{font-size:20px}
+.logo{font-size:1.75rem}
 .title{letter-spacing:.3px}
 .actions{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 button, select, input[type=file]{
@@ -136,3 +156,51 @@ kbd{
   #editor { display:none !important; }
   #printArea { display:block !important; }
 }
+
+
+/* ===== Technical Enhancements + Screenplay-Specific Enhancements (CSS) ===== */
+
+/* Dark theme toggle (default: dark as your app already is). 
+   Add .light on <body> to switch. */
+body.light{
+  --bg:#ffffff; --panel:#f6f7fb; --panel-2:#eef0f6;
+  --text:#0f172a; --muted:#475569; --border:#cbd5e1; --accent:#2563eb;
+  background:var(--bg); color:var(--text);
+}
+body.light .editor-pane, body.light .sidebar, body.light .topbar{
+  background:var(--panel); border-color:var(--border);
+}
+body.light #editor{ color:var(--text); }
+
+/* Status metrics */
+.status-metrics{
+  display:flex; gap:12px; align-items:center; font-variant-numeric: tabular-nums;
+}
+
+/* Find/Replace panel */
+.find-panel{
+  position:fixed; right:16px; bottom:16px; z-index:90;
+  background:var(--panel-2); color:var(--text);
+  border:1px solid var(--border); border-radius:10px;
+  display:flex; gap:6px; padding:10px; box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+.find-panel input{
+  background:transparent; border:1px solid var(--border);
+  padding:6px 8px; border-radius:8px; outline:none; color:var(--text);
+}
+.find-panel button{
+  background:var(--panel); border:1px solid var(--border);
+  padding:6px 10px; border-radius:8px; cursor:pointer;
+}
+
+/* Outline list injected at the end of the sidebar */
+#outline{
+  margin-top:14px; border-top:1px dashed var(--border); padding-top:12px;
+}
+#outline h3{ margin:0 0 8px 0; font-size:14px; color:var(--muted); }
+#outline ul{ list-style:none; margin:0; padding:0; max-height:220px; overflow:auto; }
+#outline li{ padding:6px 8px; border-radius:8px; cursor:pointer; }
+#outline li:hover{ background:var(--panel-2); }
+
+/* Character highlight in preview-only blocks (if you add any) */
+.char-highlight{ font-weight:bold; text-decoration:underline; }
