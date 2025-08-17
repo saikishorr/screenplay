@@ -3,6 +3,17 @@
 A modern, responsive web platform for creating, editing, and managing screenplays online.  
 This release focuses on clean design, improved writing tools, and better export options for writers.
 
+![HTML](https://img.shields.io/badge/HTML-5.2+-blue)
+![Javascript](https://img.shields.io/badge/Javascript-ES6+-blue)
+![CSS](https://img.shields.io/badge/CSS-5.0.1+-blue)
+![License](https://img.shields.io/badge/license-Apache-green)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Version](https://img.shields.io/github/v/release/saikishorr/screenplay?label=version)
+![Commits](https://img.shields.io/github/commit-activity/m/saikishorr/screenplay)
+![Last Commit](https://img.shields.io/github/last-commit/saikishorr/screenplay)
+![Platform](https://img.shields.io/badge/platform-browser%20only-lightgrey)
+![Responsive](https://img.shields.io/badge/mobile%20friendly-yes-orange)
+
 ---
 
 ## 🚀 Features
