@@ -405,33 +405,52 @@ const downloadBlob = (name, data, type='text/plain')=>{
 (function injectOutline(){
   const sidebar = document.querySelector('.sidebar');
   if(!sidebar) return;
+
   const wrap = document.createElement('div');
   wrap.id = 'outline';
+  wrap.classList.add('group');
   wrap.innerHTML = `<h3>Outline</h3><ul id="outlineList"></ul>`;
-  sidebar.appendChild(wrap);
-  const list = $('#outlineList');
+
+  // Find the Shortcuts group (.help)
+  const shortcutsGroup = sidebar.querySelector('.group');
+
+  // Insert Outline ABOVE shortcuts
+  if (shortcutsGroup) {
+    sidebar.insertBefore(wrap, shortcutsGroup);
+  } else {
+    sidebar.appendChild(wrap); // fallback if shortcuts not found
+  }
+
+  const list = document.getElementById('outlineList');
 
   function rebuild(){
     const lines = editor.value.replace(/\r\n/g,'\n').split('\n');
     list.innerHTML = '';
     let charCount = 0;
+
     lines.forEach((ln, i)=>{
       const m = ln.match(/^\s*(\d+\.\s+)?(INT\.|EXT\.|INT\/EXT\.)\s*(.*)$/i);
-      const len = ln.length + 1; charCount += len;
+      const len = ln.length + 1; 
+      charCount += len;
+
       if(m){
         const item = document.createElement('li');
         const num = (m[1] || '').trim();
         const tail = (m[3] || '').trim();
+
         item.textContent = `${(num||'').replace('.','')} ${m[2].toUpperCase()} ${tail}`.trim();
-        const pos = charCount - len; // approx char index at line start
+
+        const pos = charCount - len; // char index at line start
         item.addEventListener('click', ()=>{
           editor.focus();
           editor.setSelectionRange(pos, pos);
         });
+
         list.appendChild(item);
       }
     });
   }
+
   editor.addEventListener('input', rebuild);
   rebuild();
 })();
