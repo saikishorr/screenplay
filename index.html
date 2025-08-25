@@ -33,16 +33,17 @@
     <div class="actions">
       <label for="upload" class="visually-hidden">Upload screenplay file</label>
       <input id="upload" type="file" accept=".txt,.fountain,.fdx,.rtf" title="Upload screenplay file" />
-      <button id="newBtn" title="Clear editor (Ctrl+N)">New</button>
+      <button id="newBtn" title="Clear editor (Ctrl+Q)">New</button>
 
       <select id="downloadFormat" title="Download text format">
         <option value="fountain">.fountain</option>
         <option value="txt">.txt</option>
       </select>
-      <button id="downloadBtn" title="Download text (Ctrl+S)">Download</button>
+      <button id="downloadBtn" title="Download text (Ctrl+M)">Download</button>
 
       <button id="pdfBtn" title="Export PDF (Courier 12)">PDF</button>
       <button id="fdxBtn" title="Export Final Draft (.fdx)">FDX</button>
+      
     </div>
   </div>
 </header>
@@ -91,19 +92,19 @@ A quiet room. Rain patters on the window.
 
       <div class="group">
         <h3>Text Formatting and Indenting </h3>
-        <button data-action="header">Header <kbd>Ctrl</kbd>+<kbd>1</kbd></button>
+        <button data-action="header">Header <kbd>Ctrl</kbd>+<kbd>2</kbd></button>
         <small>Add/Convert a scene header </small>
 
-        <button data-action="action">Action<kbd>Ctrl</kbd>+<kbd>2</kbd></button>
+        <button data-action="action">Action<kbd>Ctrl</kbd>+<kbd>3</kbd></button>
         <small>Set indents for action text</small>
 
-        <button data-action="speaker">Speaker <kbd>Ctrl</kbd>+<kbd>3</kbd></button>
-        <small>Add/Convert speaker's name</small>
+        <button data-action="speaker">Character <kbd>Ctrl</kbd>+<kbd>4</kbd></button>
+        <small>Add/Convert character's name</small>
 
-        <button data-action="parentheses">Parentheses <kbd>Ctrl</kbd>+<kbd>4</kbd></button>
-        <small>Set indents for speaker's cue</small>
+        <button data-action="parentheses">Parentheses <kbd>Ctrl</kbd>+<kbd>5</kbd></button>
+        <small>Set indents for character's cue</small>
 
-        <button data-action="dialog">Dialog <kbd>Ctrl</kbd>+<kbd>5</kbd></button>
+        <button data-action="dialog">Dialog <kbd>Ctrl</kbd>+<kbd>6</kbd></button>
         <small>Set indents for dialog text</small>
       </div>
 
@@ -112,17 +113,19 @@ A quiet room. Rain patters on the window.
         <button data-action="newchar">New Character</button>
         <small>Add/Convert introduction</small>
 
-        <button data-action="vfx">VFX/SFX</button>
-        <small>Add/Convert a special effect</small>
+        <button data-action="vfx" class="btn">VFX <kbd>Ctrl</kbd>+<kbd>7</kbd></button>
+        <small>Add a visual effect</small>
+        <button data-action="sfx" class="btn">SFX <kbd>Ctrl</kbd>+<kbd>8</kbd></button>
+        <small>Add a sound effect</small>
       </div>
 
       <div class="group">
         <h3>Transitions</h3>
-        <div class="transitions">
-          <button data-action="fadein">Fade In</button>
-          <button data-action="cutto">Cut To</button>
-          <button data-action="fadeout">Fade Out</button>
-        </div>
+        <!-- <div class="transitions"> -->
+          <button data-action="fadein">Fade In <kbd>Ctrl</kbd>+<kbd>1</kbd></button>
+          <button data-action="cutto">Cut To <kbd>Ctrl</kbd>+<kbd>9</kbd></button>
+          <button data-action="fadeout">Fade Out <kbd>Ctrl</kbd>+<kbd>0</kbd></button>
+        <!-- </div> -->
       </div>
 
       <div class="group">
@@ -136,13 +139,18 @@ A quiet room. Rain patters on the window.
       <div class="group help">
         <h3>Shortcuts</h3>
         <ul>
-          <li><kbd>Ctrl</kbd>+<kbd>1</kbd> Header</li>
-          <li><kbd>Ctrl</kbd>+<kbd>2</kbd> Action</li>
-          <li><kbd>Ctrl</kbd>+<kbd>3</kbd> Speaker</li>
-          <li><kbd>Ctrl</kbd>+<kbd>4</kbd> Parentheses</li>
-          <li><kbd>Ctrl</kbd>+<kbd>5</kbd> Dialog</li>
-          <li><kbd>Ctrl</kbd>+<kbd>6</kbd> New</li>
-          <li><kbd>Ctrl</kbd>+<kbd>7</kbd> Download</li>
+          <li><kbd>Ctrl</kbd>+<kbd>Q</kbd> New</li>
+          <li><kbd>Ctrl</kbd>+<kbd>1</kbd> Fade In</li>
+          <li><kbd>Ctrl</kbd>+<kbd>2</kbd> Header</li>
+          <li><kbd>Ctrl</kbd>+<kbd>3</kbd> Action</li>
+          <li><kbd>Ctrl</kbd>+<kbd>4</kbd> Character</li>
+          <li><kbd>Ctrl</kbd>+<kbd>5</kbd> Parentheses</li>
+          <li><kbd>Ctrl</kbd>+<kbd>6</kbd> Dialog</li>
+          <li><kbd>Ctrl</kbd>+<kbd>7</kbd> VFX</li>
+          <li><kbd>Ctrl</kbd>+<kbd>8</kbd> SFX</li>
+          <li><kbd>Ctrl</kbd>+<kbd>9</kbd> Cut To</li>
+          <li><kbd>Ctrl</kbd>+<kbd>0</kbd> Fade Out</li>
+          <li><kbd>Ctrl</kbd>+<kbd>M</kbd> Download</li>
         </ul>
       </div>
     </aside>

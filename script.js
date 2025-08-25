@@ -60,7 +60,8 @@ const actions = {
     insertAtCursor(editor, padToColumn(COL.SPEAKER) + 'NEW CHARACTER\n' +
                              padToColumn(COL.PAREN) + '(introducing)\n');
   },
-  vfx(){ insertAtCursor(editor, '\nSFX: THUNDER CRACKS.\n'); },
+  vfx() { insertAtCursor(editor, '\nVFX: Thunder rumbles across the sky, lightning flashes.\n'); },
+  sfx() { insertAtCursor(editor, '\nSFX: Thunder cracks loudly, rain pours down.\n'); },
   fadein(){ insertAtCursor(editor, rightAlign('FADE IN:') + '\n'); },
   cutto(){ insertAtCursor(editor, rightAlign('CUT TO:') + '\n'); },
   fadeout(){ insertAtCursor(editor, rightAlign('FADE OUT.') + '\n'); }
@@ -220,13 +221,18 @@ fdxBtn.addEventListener('click', ()=>{
 document.addEventListener('keydown', (e)=>{
   if(e.ctrlKey){
     const k = e.key.toLowerCase();
-    if(k === '7'){ e.preventDefault(); downloadBtn.click(); }
-    if(k === '6'){ e.preventDefault(); newBtn.click(); }
-    if(k === '1'){ e.preventDefault(); actions.header(); }
-    if(k === '2'){ e.preventDefault(); actions.action(); }
-    if(k === '3'){ e.preventDefault(); actions.speaker(); }
-    if(k === '4'){ e.preventDefault(); actions.parentheses(); }
-    if(k === '5'){ e.preventDefault(); actions.dialog(); }
+    if(k === 'q'){ e.preventDefault(); newBtn.click(); }
+    if(k === '1'){ e.preventDefault(); actions.fadein(); }
+    if(k === '2'){ e.preventDefault(); actions.header(); }
+    if(k === '3'){ e.preventDefault(); actions.action(); }
+    if(k === '4'){ e.preventDefault(); actions.speaker(); }
+    if(k === '5'){ e.preventDefault(); actions.parentheses(); }
+    if(k === '6'){ e.preventDefault(); actions.dialog(); }
+    if(k === '7'){ e.preventDefault(); actions.vfx(); }
+    if(k === '8'){ e.preventDefault(); actions.sfx(); }
+    if(k === '9'){ e.preventDefault(); actions.cutto(); }
+    if(k === '0'){ e.preventDefault(); actions.fadeout(); }
+    if(k === 'm'){ e.preventDefault(); downloadBtn.click(); }
   }
 });
 
@@ -394,7 +400,7 @@ const downloadBlob = (name, data, type='text/plain')=>{
     triggerAutosave?.();
   });
 })();
-
+       
 /* ---------- 5) Outline View (scene list, click to jump) ---------- */
 (function injectOutline(){
   const sidebar = document.querySelector('.sidebar');
@@ -525,3 +531,5 @@ The room buzzes.
     downloadBlob('breakdown.json', JSON.stringify(data, null, 2), 'application/json');
   });
 })();
+
+
