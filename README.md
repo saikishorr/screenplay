@@ -1,5 +1,5 @@
 # 🎬 Screenplay Website – Version 1.2.0
- 
+  
 A modern, responsive web platform for creating, editing, and managing screenplays online.  
 This release focuses on clean design, improved writing tools, and better export options for writers.
 
